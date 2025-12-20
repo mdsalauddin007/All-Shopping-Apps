@@ -23,11 +23,20 @@ header p{color:var(--muted);font-size:14px;line-height:1.6}
 .card{background:var(--card);border:1px solid var(--outline);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
 .brand-thumb{width:72px;height:72px;border-radius:14px;background:#232427;display:flex;align-items:center;justify-content:center}
 .brand-thumb img{width:80%;height:80%;object-fit:contain}
-.btn{padding:10px;border-radius:12px;border:1px solid var(--outline);background:#333;color:#fff;font-weight:700;text-decoration:none;text-align:center}
+.btn{padding:10px;border-radius:12px;border:1px solid var(--outline);background:#333;color:#fff;font-weight:700;text-decoration:none;text-align:center;cursor:pointer}
 .btn.visit{background:var(--accent);color:#111}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
 <header>
 <h1>All Shopping Apps</h1>
-<p>Stop installing too many apps. Access all popular shopping websites in one place. No downloads, no updates, no storage usage. Just choose a category and open instantly. ✔ Save storage ✔ Faster phone ✔ Less clutter ✔ Trusted links
+<p>
+Stop installing too many apps. Access all popular shopping websites in one place.
+No downloads, no updates, no storage usage. Just choose a category and open instantly.
+✔ Save storage ✔ Faster phone ✔ Less clutter ✔ Trusted links
 </p>
 </header>
 
@@ -45,7 +54,8 @@ header p{color:var(--muted);font-size:14px;line-height:1.6}
 </footer>
 
 <script>
-const SHEET_JSON = "https://opensheet.elk.sh/1BXjElCofEZncI0G9iPEhJ6s5MqkqERCfWXHoYR_cg-Q/All-SHOPPING-APPS";
+const SHEET_JSON =
+"https://opensheet.elk.sh/1BXjElCofEZncI0G9iPEhJ6s5MqkqERCfWXHoYR_cg-Q/All-SHOPPING-APPS";
 
 let raw = [];
 let active = "All";
@@ -73,7 +83,15 @@ function render(data){
         </div>
         <h3>${x.name}</h3>
         <p style="font-size:13px;color:#aeb6bf">${x.desc}</p>
-        <a class="btn visit" href="${x.link}" target="_blank">Visit Website</a>
+
+        <a class="btn visit" href="${x.link}" target="_blank">
+          Visit Website
+        </a>
+
+        <!-- ✅ NEW SHARE BUTTON -->
+        <button class="btn" onclick="shareLink('${x.name}','${x.link}')">
+          Open / Share
+        </button>
       </div>
     `;
   });
@@ -82,9 +100,11 @@ function render(data){
 function apply(){
   let d = [...raw];
   if(active !== "All") d = d.filter(x => x.category === active);
-  if(search.value) d = d.filter(x =>
-    x.name.toLowerCase().includes(search.value.toLowerCase())
-  );
+  if(search.value){
+    d = d.filter(x =>
+      x.name.toLowerCase().includes(search.value.toLowerCase())
+    );
+  }
   render(d);
 }
 
@@ -108,49 +128,19 @@ function initCategories(){
 
 search.oninput = apply;
 
-/* 🏠 Home Button Logic (ADDON) */
-const homeBtn = document.getElementById("homeBtn");
-
-/* Click = Go Home */
-homeBtn.onclick = () => {
-  active = "All";
-  search.value = "";
-  document.querySelectorAll(".cat").forEach(x=>x.classList.remove("active"));
-  categoryBar.firstChild.classList.add("active");
-  apply();
-};
-
-/* Drag logic */
-let drag=false,ox=0,oy=0;
-
-homeBtn.addEventListener("mousedown",e=>{
-  drag=true;
-  ox=e.clientX-homeBtn.offsetLeft;
-  oy=e.clientY-homeBtn.offsetTop;
-});
-document.addEventListener("mousemove",e=>{
-  if(!drag) return;
-  homeBtn.style.left=(e.clientX-ox)+"px";
-  homeBtn.style.top=(e.clientY-oy)+"px";
-});
-document.addEventListener("mouseup",()=>drag=false);
-
-/* Touch support */
-homeBtn.addEventListener("touchstart",e=>{
-  drag=true;
-  const t=e.touches[0];
-  ox=t.clientX-homeBtn.offsetLeft;
-  oy=t.clientY-homeBtn.offsetTop;
-});
-document.addEventListener("touchmove",e=>{
-  if(!drag) return;
-  const t=e.touches[0];
-  homeBtn.style.left=(t.clientX-ox)+"px";
-  homeBtn.style.top=(t.clientY-oy)+"px";
-});
-document.addEventListener("touchend",()=>drag=false);
+/* 🔗 SHARE FUNCTION */
+function shareLink(name, url){
+  if(navigator.share){
+    navigator.share({
+      title: name,
+      text: "Check this website",
+      url: url
+    });
+  }else{
+    window.open(url, "_blank");
+  }
+}
 </script>
 
 </body>
 </html>
-
