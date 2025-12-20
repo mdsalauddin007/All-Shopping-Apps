@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>All Shopping Apps</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#1e1f22;
+  --card:#2b2c2f;
+  --muted:#aeb6bf;
+  --text:#e9eef6;
+  --outline:rgba(255,255,255,.06);
+  --accent:#d4d4d4;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter;background:var(--bg);color:var(--text)}
+.wrap{max-width:1200px;margin:auto;padding:18px}
+header h1{margin:0;font-size:26px;font-weight:800}
+header p{color:var(--muted);font-size:14px}
+
+.search{margin-top:16px;padding:12px;border-radius:14px;border:1px solid var(--outline);background:#26272b}
+.search input{width:100%;background:transparent;border:0;color:var(--text);font-size:16px}
+
+.category-bar{display:flex;gap:8px;overflow-x:auto;margin-top:16px}
+.cat{padding:8px 14px;border-radius:999px;border:1px solid var(--outline);cursor:pointer;white-space:nowrap}
+.cat.active{background:var(--accent);color:#111;font-weight:700}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:16px}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--outline);
+  border-radius:16px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.brand-thumb{
+  width:72px;height:72px;border-radius:14px;
+  background:#232427;
+  display:flex;align-items:center;justify-content:center
+}
+.brand-thumb img{width:80%;height:80%;object-fit:contain}
+
+.btn{
+  padding:10px;border-radius:12px;
+  border:1px solid var(--outline);
+  background:#333;color:#fff;
+  font-weight:700;text-decoration:none;text-align:center
+}
+.btn.visit{background:var(--accent);color:#111}
+
+/* Skeleton */
+.skeleton{
+  height:180px;
+  border-radius:16px;
+  background:linear-gradient(90deg,#2b2c2f,#3a3b3e,#2b2c2f);
+  background-size:200% 100%;
+  animation:shimmer 1.2s infinite;
+}
+@keyframes shimmer{
+  0%{background-position:-200%}
+  100%{background-position:200%}
+}
+</style>
+
+<!-- 🔴 WebView detect → browser open (500 error fix) -->
+<script>
+(function(){
+  const ua = navigator.userAgent.toLowerCase();
+  const isWebView = ua.includes("wv") || (ua.includes("android") && !ua.includes("chrome"));
+  if(isWebView){
+    window.location.href = window.location.href;
+  }
+})();
+</script>
+</head>
+
+<body>
+<div class="wrap">
+<header>
+<h1>All Shopping Apps</h1>
+<p>Stop installing too many apps.
+Access all popular shopping websites in one place.
+No downloads, no updates, no storage usage.
+Just choose a category and open instantly.
+
+✔ Save storage   ✔ Faster phone   ✔ Less clutter   ✔ Trusted links</p>
+</header>
+
+<div class="search">
+  <input id="searchInput" placeholder="Search brands...">
+</div>
+
+<nav id="categoryBar" class="category-bar"></nav>
+<main id="grid" class="grid"></main>
+</div>
+
+<script>
+const SHEET_JSON =
+"https://opensheet.elk.sh/1BXjElCofEZncI0G9iPEhJ6s5MqkqERCfWXHoYR_cg-Q/All-SHOPPING-APPS";
+
+const CACHE_KEY = "offdeals_cache";
+const CACHE_TIME = 6 * 60 * 60 * 1000;
+
+let raw = [];
+let active = "All";
+
+const grid = document.getElementById("grid");
+const search = document.getElementById("searchInput");
+const categoryBar = document.getElementById("categoryBar");
+
+/* Skeleton show */
+for(let i=0;i<6;i++){
+  const sk = document.createElement("div");
+  sk.className = "skeleton";
+  grid.appendChild(sk);
+}
+
+/* Load cache first */
+const cached = localStorage.getItem(CACHE_KEY);
+if(cached){
+  const parsed = JSON.parse(cached);
+  if(Date.now() - parsed.time < CACHE_TIME){
+    raw = parsed.data;
+    initCategories();
+    apply();
+  } else loadFromSheet();
+} else loadFromSheet();
+
+function loadFromSheet(){
+  fetch(SHEET_JSON)
+    .then(r=>r.json())
+    .then(data=>{
+      raw = data;
+      localStorage.setItem(CACHE_KEY, JSON.stringify({time:Date.now(),data}));
+      initCategories();
+      apply();
+    })
+    .catch(()=>{
+      if(cached){
+        raw = JSON.parse(cached).data;
+        initCategories();
+        apply();
+      }
+    });
+}
+
+function render(data){
+  grid.innerHTML = "";
+  data.forEach(x=>{
+    grid.innerHTML += `
+      <div class="card">
+        <div class="brand-thumb">
+          <img src="${x.logo_override}" loading="lazy">
+        </div>
+        <h3>${x.name}</h3>
+        <p style="font-size:13px;color:#aeb6bf">${x.desc}</p>
+        <a class="btn visit" href="${x.link}" target="_blank">Visit Website</a>
+      </div>`;
+  });
+}
+
+function apply(){
+  let d = [...raw];
+  if(active!=="All") d = d.filter(x=>x.category===active);
+  if(search.value)
+    d = d.filter(x=>x.name.toLowerCase().includes(search.value.toLowerCase()));
+  render(d);
+}
+
+function initCategories(){
+  categoryBar.innerHTML="";
+  const cats=["All",...new Set(raw.map(x=>x.category))];
+  cats.forEach(c=>{
+    const el=document.createElement("div");
+    el.className="cat";
+    el.textContent=c;
+    el.onclick=()=>{
+      active=c;
+      document.querySelectorAll(".cat").forEach(x=>x.classList.remove("active"));
+      el.classList.add("active");
+      apply();
+    };
+    categoryBar.appendChild(el);
+  });
+  categoryBar.firstChild.classList.add("active");
+}
+
+/* Debounced search */
+let t;
+search.oninput=()=>{
+  clearTimeout(t);
+  t=setTimeout(apply,150);
+};
+</script>
+</body>
+</html>
+<footer style="margin-top:30px;text-align:center;font-size:13px;color:#aeb6bf">
+  <a href="privacy.html" style="color:#d4d4d4">Privacy Policy</a> |
+  <a href="terms.html" style="color:#d4d4d4">Terms & Conditions</a>
+</footer>
+
+
