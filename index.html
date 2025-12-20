@@ -70,7 +70,7 @@ header p{color:var(--muted);font-size:14px}
 }
 </style>
 
-<!-- 🔴 WebView detect → browser open (500 error fix) -->
+<!-- 🔴 WebView detect -->
 <script>
 (function(){
   const ua = navigator.userAgent.toLowerCase();
@@ -86,12 +86,13 @@ header p{color:var(--muted);font-size:14px}
 <div class="wrap">
 <header>
 <h1>All Shopping Apps</h1>
-<p>Stop installing too many apps.
+<p>
+Stop installing too many apps.
 Access all popular shopping websites in one place.
 No downloads, no updates, no storage usage.
-Just choose a category and open instantly.
-
-✔ Save storage   ✔ Faster phone   ✔ Less clutter   ✔ Trusted links</p>
+Just choose a category and open instantly.<br><br>
+✔ Save storage &nbsp; ✔ Faster phone &nbsp; ✔ Less clutter &nbsp; ✔ Trusted links
+</p>
 </header>
 
 <div class="search">
@@ -200,11 +201,41 @@ search.oninput=()=>{
   t=setTimeout(apply,150);
 };
 </script>
-</body>
-</html>
+
+<!-- 🟢 ADDON: External Browser fallback for blocked / 500-error websites -->
+<script>
+(function () {
+  const ua = navigator.userAgent.toLowerCase();
+  const isAndroidWebView =
+    ua.includes("wv") ||
+    (ua.includes("android") && !ua.includes("chrome"));
+
+  document.addEventListener("click", function (e) {
+    const link = e.target.closest("a.btn.visit");
+    if (!link) return;
+
+    if (isAndroidWebView) {
+      e.preventDefault();
+      const url = link.href;
+
+      try {
+        window.location.href = url;
+      } catch (err) {
+        window.open(url, "_system");
+      }
+
+      setTimeout(() => {
+        window.open(url, "_system");
+      }, 1200);
+    }
+  });
+})();
+</script>
+
 <footer style="margin-top:30px;text-align:center;font-size:13px;color:#aeb6bf">
   <a href="privacy.html" style="color:#d4d4d4">Privacy Policy</a> |
   <a href="terms.html" style="color:#d4d4d4">Terms & Conditions</a>
 </footer>
 
-
+</body>
+</html>
