@@ -3,365 +3,184 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" />
-    <title>ShopOne AI — Premium Shopping OS</title>
+    <title>ShopOne AI — Pro OS</title>
     
-    <!-- Modern Readability Font -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Confetti for Reward Feeling -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
         :root {
-            /* Scientific Dark Theme Palette */
             --bg: #020408;
             --surface: #0f121d;
             --accent: #10b981;
             --accent-glow: rgba(16, 185, 129, 0.3);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --border: rgba(255, 255, 255, 0.07);
-            --squircle: 22.5%; /* Perfect Mobile Icon Curve */
+            --border: rgba(255, 255, 255, 0.08);
             --glass: rgba(15, 23, 42, 0.8);
         }
 
-        /* --- Animations --- */
-        @keyframes mesh-flow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
-        @keyframes toast-in { 0% { transform: translateX(-120%); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            margin: 0; font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg); color: var(--text-main);
-            line-height: 1.4; overflow-x: hidden;
-            background-image: radial-gradient(circle at 50% -20%, #1e293b 0%, transparent 50%);
+        /* --- SKELETON LOADING ANIMATION --- */
+        @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+        .skeleton {
+            background: linear-gradient(to right, #1e293b 8%, #334155 18%, #1e293b 33%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite linear;
+            border-radius: 8px;
         }
 
+        /* --- GENERAL STYLES --- */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); overflow-x: hidden; background-image: radial-gradient(circle at 50% -20%, #1e293b 0%, transparent 50%); }
         .container { max-width: 1200px; margin: auto; padding: 0 16px; }
 
-        /* --- SOCIAL PROOF TOAST --- */
-        #liveFeed {
-            position: fixed; bottom: 25px; left: 20px; z-index: 4000;
-            background: var(--glass); backdrop-filter: blur(15px);
-            border: 1px solid var(--border); padding: 12px 20px;
-            border-radius: 100px; display: none; align-items: center; gap: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); animation: toast-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* --- STICKY NAV SYSTEM --- */
-        .top-nav {
-            position: sticky; top: 0; z-index: 2000;
-            background: rgba(2, 4, 8, 0.8);
-            backdrop-filter: blur(25px);
-            border-bottom: 1px solid var(--border);
-            padding: 12px 0;
-        }
-
-        .search-bar {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 16px; padding: 12px 18px;
-            display: flex; align-items: center; gap: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: 0.3s;
-        }
+        /* --- HEADER & SEARCH --- */
+        .top-nav { position: sticky; top: 0; z-index: 2000; background: rgba(2, 4, 8, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 10px 0; }
+        .search-bar { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
         .search-bar:focus-within { border-color: var(--accent); }
-        .search-bar input { background: transparent; border: 0; color: #fff; width: 100%; outline: none; font-size: 16px; font-weight: 500; }
+        .search-bar input { background: transparent; border: 0; color: #fff; width: 100%; outline: none; font-size: 14px; font-weight: 500; }
 
-        /* --- PRO OS BANNER --- */
-        .os-banner {
-            margin-top: 15px; width: 100%; height: clamp(180px, 25vw, 260px);
-            border-radius: 35px; position: relative; overflow: hidden;
-            border: 1px solid var(--border);
-            background: linear-gradient(-45deg, #0f172a, #020617, #1e1b4b, #020408);
-            background-size: 400% 400%; animation: mesh-flow 15s infinite ease;
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-        }
+        /* --- COMPACT BANNER --- */
+        .os-banner { margin-top: 15px; width: 100%; height: clamp(100px, 15vw, 160px); border-radius: 24px; position: relative; overflow: hidden; border: 1px solid var(--border); background: linear-gradient(-45deg, #0f172a, #020617, #1e1b4b, #020408); background-size: 400% 400%; animation: mesh-flow 15s infinite ease; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        .banner-info h1 { margin: 0; font-size: clamp(22px, 3vw, 32px); font-weight: 700; letter-spacing: -1px; line-height: 1.1; }
+        .banner-info p { margin: 4px 0 0; font-size: 11px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        @keyframes mesh-flow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
 
-        .banner-info { z-index: 10; }
-        .banner-info h1 { margin: 0; font-size: clamp(28px, 5vw, 48px); font-weight: 800; letter-spacing: -2px; }
-        .banner-info p { margin: 6px 0 0; font-size: 14px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+        /* --- CATEGORY CHIPS --- */
+        .cat-group { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 20px 0 25px; }
+        .cat-pill { padding: 7px 14px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); font-size: 11px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+        .cat-pill:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .cat-pill.active { background: #fff; color: #000; border-color: #fff; }
 
-        /* --- DYNAMIC LIVE COUNTER --- */
-        .live-stat-container {
-            display: flex; align-items: center; justify-content: center;
-            gap: 10px; margin: 20px 0; font-size: 11px; font-weight: 800;
-            color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px;
-        }
-        .live-stat-container .pulse { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; animation: pulse-glow 1.5s infinite; }
-        @keyframes pulse-glow { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { transform: scale(1.2); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { transform: scale(1); } }
+        /* --- APP GRID --- */
+        .app-shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-bottom: 60px; }
+        .app-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; cursor: pointer; position: relative; transition: 0.3s; }
+        .app-card:hover { transform: translateY(-6px); border-color: var(--accent); }
+        
+        /* Favorite Icon */
+        .fav-icon { position: absolute; top: 15px; right: 15px; font-size: 18px; color: rgba(255,255,255,0.2); transition: 0.2s; z-index: 5; }
+        .fav-icon.active { color: #ef4444; transform: scale(1.2); }
+        .fav-icon:hover { transform: scale(1.2); }
 
-        /* --- CATEGORY TABS --- */
-        .cat-group {
-            display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
-            margin-bottom: 25px; padding: 0 4px;
-        }
-        .cat-pill {
-            display: flex; align-items: center; gap: 8px;
-            padding: 12px 20px; border-radius: 100px; background: var(--surface);
-            border: 1px solid var(--border); font-size: 13px; font-weight: 700;
-            color: var(--text-muted); cursor: pointer; transition: 0.3s;
-        }
-        .cat-pill i { font-style: normal; font-size: 16px; }
-        .cat-pill.active { background: #fff; color: #000; border-color: #fff; box-shadow: 0 10px 20px rgba(255,255,255,0.1); }
-
-        /* --- APP SHELF GRID --- */
-        .app-shelf {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 20px; margin-bottom: 60px;
-        }
-
-        .app-card {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 35px; padding: 25px; display: flex; flex-direction: column;
-            cursor: pointer; position: relative; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            perspective: 1000px;
-        }
-        .app-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
-
-        /* Icon Container with Tilt logic via JS */
-        .squircle-icon-wrap {
-            width: 76px; height: 76px; margin-bottom: 20px;
-            position: relative; align-self: flex-start;
-        }
-        .squircle-icon {
-            width: 100%; height: 100%; background: #fff;
-            border-radius: var(--squircle);
-            display: flex; align-items: center; justify-content: center;
-            padding: 12px; position: relative; overflow: hidden;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.4);
-        }
-        .squircle-icon::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 50%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 70%);
-            z-index: 2;
-        }
+        .squircle-icon-wrap { width: 60px; height: 60px; margin-bottom: 16px; }
+        .squircle-icon { width: 100%; height: 100%; background: #fff; border-radius: 16px; display: flex; align-items: center; justify-content: center; padding: 10px; position: relative; overflow: hidden; }
         .squircle-icon img { max-width: 90%; max-height: 90%; object-fit: contain; z-index: 1; }
-
-        .app-card h3 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
-        .app-card p { font-size: 13px; color: var(--text-muted); margin: 8px 0 22px; line-height: 1.5; flex-grow: 1; }
-
-        /* Dual Buttons */
-        .btn-stack { display: flex; gap: 8px; }
-        .btn { flex: 1; padding: 14px 4px; border-radius: 14px; border: 0; font-weight: 800; font-size: 10.5px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; transition: 0.2s; }
-        .btn-p { background: var(--accent); color: #000; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2); }
+        
+        .app-card h3 { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+        .app-card p { font-size: 12px; color: var(--text-muted); margin: 6px 0 18px; line-height: 1.4; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .btn-stack { display: flex; gap: 6px; }
+        .btn { flex: 1; padding: 10px 4px; border-radius: 10px; border: 0; font-weight: 700; font-size: 10px; cursor: pointer; text-transform: uppercase; }
+        .btn-p { background: var(--accent); color: #000; }
         .btn-s { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border); }
 
-        /* --- INSTALL GUIDE --- */
-        .os-guide { background: var(--surface); border-radius: 40px; padding: 50px 30px; margin-bottom: 80px; border: 1px solid var(--border); text-align: center; }
-        .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px; text-align: left; }
-        .guide-item { background: rgba(255,255,255,0.02); padding: 30px; border-radius: 28px; border: 1px solid var(--border); }
-        .step { display: flex; gap: 15px; margin-bottom: 20px; align-items: flex-start; }
-        .step-num { background: var(--accent); color: #000; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; flex-shrink: 0; }
-        .step-txt { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
-        .step-txt b { color: var(--text-main); }
-
         /* --- MODAL --- */
-        .modal { position: fixed; inset: 0; background: rgba(2, 4, 8, 0.98); z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(25px); }
-        .modal-box { width: 100%; max-width: 400px; text-align: center; }
-        .ai-core { width: 90px; height: 90px; background: var(--accent); border-radius: 50%; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; font-size: 45px; box-shadow: 0 0 60px var(--accent-glow); animation: pulse 2s infinite; }
+        .modal { position: fixed; inset: 0; background: rgba(2, 4, 8, 0.98); z-index: 5000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .modal-box { width: 90%; max-width: 360px; text-align: center; }
+        .ai-core { width: 80px; height: 80px; background: var(--accent); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; font-size: 40px; animation: pulse 2s infinite; }
+        .bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 15px 0; overflow: hidden; }
+        .bar-fill { width: 0%; height: 100%; background: var(--accent); transition: width 0.3s; }
+        .coupon-box { background: #fff; color: #000; padding: 15px; border-radius: 12px; font-weight: 800; letter-spacing: 2px; margin: 20px 0; font-size: 20px; border: 2px dashed #000; display: none; }
 
-        /* --- ADAPTIVE MOBILE VIEW --- */
         @media (max-width: 768px) {
-            .app-shelf { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .app-card { padding: 18px; border-radius: 30px; }
-            .app-card p { display: none; }
-            .squircle-icon-wrap { width: 68px; height: 68px; margin-bottom: 12px; margin-left: 0; }
-            .app-card h3 { font-size: 15px; text-align: left; }
+            .app-shelf { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .app-card { padding: 15px; border-radius: 20px; }
+            .squircle-icon-wrap { width: 50px; height: 50px; margin-bottom: 12px; }
             .btn-stack { flex-direction: column; }
-            .btn { font-size: 9.5px; padding: 12px 4px; }
-            .guide-grid { grid-template-columns: 1fr; }
-            .cat-group { justify-content: flex-start; gap: 6px; }
-            .os-banner { height: 160px; padding: 0 20px; }
-            .os-banner i { display: none; }
+            .cat-group { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 5px; }
+            .cat-pill { white-space: nowrap; }
+            .os-banner { height: 120px; padding: 0 20px; }
         }
-
-        footer { text-align: center; padding: 50px; color: var(--text-muted); font-size: 12px; border-top: 1px solid var(--border); }
     </style>
 </head>
 <body>
 
-    <!-- LIVE SOCIAL PROOF FEED -->
-    <div id="liveFeed">
-        <span style="font-size: 20px;">🔥</span>
-        <span id="feedText" style="color: #fff;">Rahul just activated a 70% Off coupon!</span>
-    </div>
-
-    <!-- STICKY OS SEARCH -->
     <div class="top-nav">
         <div class="container">
             <div class="search-bar">
-                <span style="font-size: 20px; opacity: 0.5;">🔍</span>
-                <input id="searchInput" placeholder="Search 100+ stores & AI vouchers..." autocomplete="off">
-                <span style="font-size: 20px; opacity: 0.3; cursor: pointer;">🎤</span>
+                <span style="font-size: 16px; opacity: 0.5;">🔍</span>
+                <input id="searchInput" placeholder="Search apps, stores & coupons..." autocomplete="off">
             </div>
         </div>
     </div>
 
     <div class="container">
-        <!-- PREMIUM OS BANNER -->
         <div class="os-banner">
             <div class="banner-info">
-                <p id="bannerTag">AI-Powered Shopping OS</p>
+                <p id="bannerTag">AI Shopping OS</p>
                 <h1 id="bannerTitle">ShopOne AI</h1>
             </div>
-            <!-- Dynamic Icon with Float animation -->
-            <div id="bannerIcon" style="font-size: 85px; z-index: 10; animation: float 4s infinite ease-in-out;">🤖</div>
+            <div id="bannerIcon" style="font-size: 50px; z-index: 10; animation: float 4s infinite ease-in-out;">🤖</div>
         </div>
 
-        <!-- LIVE USER COUNTER (TIME-BASED) -->
-        <div class="live-stat-container">
-            <div class="pulse"></div>
-            <span id="liveCounterText">Syncing secure data...</span>
-        </div>
-
-        <!-- CATEGORIES -->
         <nav id="catBar" class="cat-group"></nav>
 
-        <!-- APP SHELF -->
-        <main id="appShelf" class="app-shelf"></main>
-
-        <!-- INSTALL GUIDE (ENGLISH) -->
-        <section class="os-guide">
-            <div style="margin-bottom: 40px;">
-                <h2 style="font-size: clamp(24px, 5vw, 32px); font-weight: 800; margin: 0;">Setup Your Shopping App</h2>
-                <p style="color:var(--text-muted); margin-top: 10px;">Transform ShopOne AI into a native app for a 0MB storage full-screen experience.</p>
+        <main id="appShelf" class="app-shelf">
+            <div class="app-card" style="height: 220px; pointer-events: none;">
+                <div class="skeleton" style="width: 50px; height: 50px; border-radius: 16px; margin-bottom: 15px;"></div>
+                <div class="skeleton" style="width: 70%; height: 20px; margin-bottom: 10px;"></div>
+                <div class="skeleton" style="width: 100%; height: 15px; margin-bottom: 5px;"></div>
+                <div class="skeleton" style="width: 100%; height: 15px; margin-bottom: 20px;"></div>
+                <div class="skeleton" style="width: 100%; height: 35px; border-radius: 10px;"></div>
             </div>
-            
-            <div class="guide-grid">
-                <!-- Mobile Instructions -->
-                <div class="guide-item">
-                    <h4 style="margin: 0 0 15px; color: var(--accent); display: flex; align-items: center; gap: 8px;">📱 Mobile (Android & iOS)</h4>
-                    <div class="step">
-                        <div class="step-num">1</div>
-                        <div class="step-txt">Tap the browser <b>Menu</b> (3-dots) or the <b>Share</b> icon.</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-num">2</div>
-                        <div class="step-txt">Scroll down and find <b>"Add to Home Screen"</b>.</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-num">3</div>
-                        <div class="step-txt">Confirm the name and click <b>"Add"</b> to see it on your home screen.</div>
-                    </div>
-                </div>
-
-                <!-- Laptop Instructions -->
-                <div class="guide-item">
-                    <h4 style="margin: 0 0 15px; color: var(--accent); display: flex; align-items: center; gap: 8px;">🖥️ Laptop & Desktop</h4>
-                    <div class="step">
-                        <div class="step-num">1</div>
-                        <div class="step-txt">Click the <b>3-dots (⋮)</b> icon in the top right corner of your browser.</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-num">2</div>
-                        <div class="step-txt">Navigate to <b>"Cast, Save & Share"</b> in the menu list.</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-num">3</div>
-                        <div class="step-txt">Select <b>"Install page as app..."</b> to pin it to your Taskbar.</div>
-                    </div>
-                </div>
+            <div class="app-card" style="height: 220px; pointer-events: none;">
+                <div class="skeleton" style="width: 50px; height: 50px; border-radius: 16px; margin-bottom: 15px;"></div>
+                <div class="skeleton" style="width: 70%; height: 20px; margin-bottom: 10px;"></div>
+                <div class="skeleton" style="width: 100%; height: 15px; margin-bottom: 5px;"></div>
+                <div class="skeleton" style="width: 100%; height: 15px; margin-bottom: 20px;"></div>
+                <div class="skeleton" style="width: 100%; height: 35px; border-radius: 10px;"></div>
             </div>
-            <div style="margin-top: 30px; opacity: 0.6; font-size: 13px;">
-                * Works best on Google Chrome, Safari, and Microsoft Edge browsers.
+             <div class="app-card" style="height: 220px; pointer-events: none;">
+                <div class="skeleton" style="width: 50px; height: 50px; border-radius: 16px; margin-bottom: 15px;"></div>
+                <div class="skeleton" style="width: 70%; height: 20px; margin-bottom: 10px;"></div>
+                <div class="skeleton" style="width: 100%; height: 15px; margin-bottom: 5px;"></div>
+                <div class="skeleton" style="width: 100%; height: 15px; margin-bottom: 20px;"></div>
+                <div class="skeleton" style="width: 100%; height: 35px; border-radius: 10px;"></div>
             </div>
-        </section>
+        </main>
     </div>
 
-    <!-- ACTIVATION MODAL -->
     <div id="aiModal" class="modal">
         <div class="modal-box">
             <div class="ai-core">🧠</div>
-            <h2 id="modalBrand">AI Activation</h2>
+            <h2 id="modalBrand" style="font-size: 20px; margin-top:0;">AI Activation</h2>
             <div class="bar-bg"><div id="modalBar" class="bar-fill"></div></div>
-            <p id="modalStatus" style="color:var(--text-muted); font-size:13px;">Establishing secure merchant connection...</p>
+            <p id="modalStatus" style="color:var(--text-muted); font-size:12px;">Secure connection...</p>
             <div id="coupon" class="coupon-box">VIP2026</div>
-            <button id="modalBtn" onclick="finalLaunch()" style="display:none; width:100%; padding:20px; background:var(--accent); color:#000; border:0; border-radius:18px; font-weight:800; cursor:pointer; font-size:16px;">ACTIVATE & OPEN STORE →</button>
+            <button id="modalBtn" onclick="finalLaunch()" style="display:none; width:100%; padding:15px; background:var(--accent); color:#000; border:0; border-radius:12px; font-weight:800; cursor:pointer; font-size:14px;">ACTIVATE →</button>
         </div>
     </div>
-
-    <footer>
-        <p>&copy; 2026 ShopOne AI Technologies • India's Universal Super Shopping Interface</p>
-    </footer>
 
     <script>
         const API_URL = "https://opensheet.elk.sh/1BXjElCofEZncI0G9iPEhJ6s5MqkqERCfWXHoYR_cg-Q/All-SHOPPING-APPS";
         let storeData = [];
+        let favorites = JSON.parse(localStorage.getItem('shopOneFavs')) || [];
         let targetUrl = "";
 
         const catConfigs = {
-            "all": { icon: "🤖", tag: "Universal AI Hub", title: "ShopOne AI" },
-            "shopping": { icon: "🛍️", tag: "Best Shopping Deals", title: "Shopping Hub" },
-            "beauty": { icon: "💅", tag: "Beauty Essentials", title: "Beauty Hub" },
-            "fashion": { icon: "👗", tag: "Latest Fashion Trends", title: "Fashion Hub" },
-            "deals": { icon: "🔥", tag: "Hot Deals Live", title: "Deals Zone" },
-            "grocery": { icon: "🛒", tag: "Daily Needs", title: "Grocery Mart" },
-            "electronics": { icon: "💻", tag: "Smart Electronics", title: "Electronics Hub" },
-            "grooming": { icon: "🧔", tag: "Personal Grooming", title: "Grooming Hub" },
-            "books": { icon: "📚", tag: "Knowledge Store", title: "Book Store" },
-            "education": { icon: "🎓", tag: "Learning Resources", title: "Education Hub" },
-            "footwear": { icon: "👟", tag: "Step in Style", title: "Footwear Hub" },
-            "sportswear": { icon: "🏃", tag: "Active Wear", title: "Sportswear Hub" },
-            "food": { icon: "🍔", tag: "Delicious Foods", title: "Food Court" },
-            "health": { icon: "🏥", tag: "Health Services", title: "Health Hub" },
-            "wellness": { icon: "🧘", tag: "Mind & Body Care", title: "Wellness Hub" },
-            "finance": { icon: "💰", tag: "Money Matters", title: "Finance Hub" },
-            "pets": { icon: "🐾", tag: "Pet Care Essentials", title: "Pet Hub" },
-            "travel": { icon: "✈️", tag: "Travel the World", title: "Travel Hub" },
-            "airlines": { icon: "🛫", tag: "Flight Bookings", title: "Airlines Hub" },
-            "digitalassets": { icon: "🪙", tag: "Crypto & NFTs", title: "Digital Assets" },
-            "software": { icon: "🧩", tag: "Apps & Tools", title: "Software Hub" },
-            "hosting": { icon: "🖥️", tag: "Web Hosting Services", title: "Hosting Hub" },
-            "domains": { icon: "🌐", tag: "Domain Names", title: "Domain Hub" },
-            "home": { icon: "🏠", tag: "Home Essentials", title: "Home Hub" },
-            "babycare": { icon: "👶", tag: "Baby Products", title: "Baby Care Hub" },
-            "clothing": { icon: "👕", tag: "Everyday Clothing", title: "Clothing Hub" },
-            "freelancing": { icon: "💼", tag: "Work Independently", title: "Freelancing Hub" },
-            "internet": { icon: "📡", tag: "Online Services", title: "Internet Hub" },
-            "auction": { icon: "🔨", tag: "Bid & Win", title: "Auction Hub" }
+            "all": { icon: "🤖", tag: "Universal AI", title: "ShopOne AI" },
+            "shopping": { icon: "🛍️" }, "beauty": { icon: "💅" }, "fashion": { icon: "👗" },
+            "deals": { icon: "🔥" }, "grocery": { icon: "🛒" }, "electronics": { icon: "💻" },
+            "books": { icon: "📚" }, "education": { icon: "🎓" }, "food": { icon: "🍔" },
+            "travel": { icon: "✈️" }, "finance": { icon: "💰" }, "favorites": {icon: "❤️", tag: "My Saved Apps", title: "My Favorites"}
         };
 
         async function init() {
-            try {
-                const res = await fetch(API_URL);
-                storeData = await res.json();
-                renderFilters();
-                renderShelf("All");
-                updateCounter();
-                startSocialFeed();
-                setInterval(updateCounter, 12000);
-            } catch (e) { console.error(e); }
-        }
-
-        function updateCounter() {
-            const hour = new Date().getHours();
-            let base = 6000;
-            if (hour >= 18 && hour <= 23) base = 9500;
-            else if (hour >= 10 && hour < 18) base = 7200;
-            else if (hour >= 3 && hour <= 6) base = 1500; // Midnight 25% logic
-            else base = 3800;
-            const fluctuation = Math.floor(Math.random() * 400);
-            document.getElementById("liveCounterText").innerText = `${(base + fluctuation).toLocaleString()} Shoppers Online Now`;
-        }
-
-        function startSocialFeed() {
-            const names = ["Anjali", "Vikram", "Sneha", "Rahul", "Priya", "Arjun", "Karan"];
-            const stores = ["Amazon", "Flipkart", "Myntra", "Ajio", "Zomato", "Nike"];
-            setInterval(() => {
-                const toast = document.getElementById("liveFeed");
-                const n = names[Math.floor(Math.random()*names.length)];
-                const s = stores[Math.floor(Math.random()*stores.length)];
-                const amt = Math.floor(Math.random()*600 + 100);
-                document.getElementById("feedText").innerText = `${n} from Delhi just saved ₹${amt} on ${s}!`;
-                toast.style.display = "flex";
-                setTimeout(() => toast.style.display = "none", 4000);
-            }, 15000);
+            // Wait 1.5s to show off the Skeleton Loading (Pro Feel)
+            setTimeout(async () => {
+                try {
+                    const res = await fetch(API_URL);
+                    storeData = await res.json();
+                    renderFilters();
+                    renderShelf("All");
+                } catch (e) { console.error(e); }
+            }, 1500);
         }
 
         function renderFilters() {
             const bar = document.getElementById("catBar");
-            const cats = ["All", ...new Set(storeData.map(b => b.category))];
+            const cats = ["All", "Favorites", ...new Set(storeData.map(b => b.category))];
             bar.innerHTML = cats.map(c => {
                 const config = catConfigs[c.toLowerCase().replace(/\s+/g, '').trim()] || { icon: "📦" };
                 return `<div class="cat-pill ${c==='All'?'active':''}" onclick="setCategory(this, '${c}')">
@@ -373,31 +192,67 @@
         function setCategory(btn, cat) {
             document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
             btn.classList.add('active');
+            
             const config = catConfigs[cat.toLowerCase().replace(/\s+/g, '').trim()] || catConfigs["all"];
-            document.getElementById("bannerTitle").innerText = cat === "All" ? "ShopOne AI" : cat;
-            document.getElementById("bannerTag").innerText = config.tag || "Verified Shopping Hub";
-            document.getElementById("bannerIcon").innerText = config.icon || "🤖";
+            document.getElementById("bannerTitle").innerText = config.title || cat;
+            document.getElementById("bannerTag").innerText = config.tag || "Browsing Category";
+            
             renderShelf(cat);
+        }
+
+        function toggleFav(e, name) {
+            e.stopPropagation();
+            if(favorites.includes(name)) {
+                favorites = favorites.filter(f => f !== name);
+            } else {
+                favorites.push(name);
+            }
+            localStorage.setItem('shopOneFavs', JSON.stringify(favorites));
+            
+            // Re-render current view to update icons
+            const activeCat = document.querySelector('.cat-pill.active').innerText.trim();
+            // If we are in Favorites tab, we need to refresh the list, otherwise just update icon
+            if(activeCat.includes("Favorites")) renderShelf("Favorites");
+            else {
+                // Quick visual toggle without full re-render
+                e.target.classList.toggle('active');
+            }
         }
 
         function renderShelf(cat, q = "") {
             const shelf = document.getElementById("appShelf");
-            const filtered = storeData.filter(b => (cat === "All" || b.category === cat) && b.name.toLowerCase().includes(q.toLowerCase()));
-            shelf.innerHTML = filtered.map(b => `
+            let filtered = [];
+
+            if (cat === "Favorites") {
+                filtered = storeData.filter(b => favorites.includes(b.name));
+                if(filtered.length === 0) {
+                    shelf.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-muted);">
+                        <div style="font-size:40px; margin-bottom:10px;">💔</div>
+                        No favorites yet. Click the heart icon on any app!
+                    </div>`;
+                    return;
+                }
+            } else {
+                filtered = storeData.filter(b => (cat === "All" || b.category === cat) && b.name.toLowerCase().includes(q.toLowerCase()));
+            }
+            
+            shelf.innerHTML = filtered.map(b => {
+                const isFav = favorites.includes(b.name);
+                return `
                 <div class="app-card" onclick="triggerActivation('${b.link}', '${b.name}')">
+                    <div class="fav-icon ${isFav ? 'active' : ''}" onclick="toggleFav(event, '${b.name}')">❤</div>
                     <div class="squircle-icon-wrap">
                         <div class="squircle-icon">
                             <img src="${b.logo_override}" onerror="this.src='https://ui-avatars.com/api/?name=${b.name}'">
                         </div>
                     </div>
                     <h3>${b.name}</h3>
-                    <p>${b.desc || 'Direct neural bridge to official store with verified VIP coupons.'}</p>
+                    <p>${b.desc || 'Verified Store Connection'}</p>
                     <div class="btn-stack">
-                        <button class="btn btn-p">Activate Deal</button>
-                        <button class="btn btn-s">Launch</button>
+                        <button class="btn btn-p">Open</button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function triggerActivation(link, name) {
@@ -411,30 +266,26 @@
             bar.style.width = "0%";
             cp.style.display = "none";
             btn.style.display = "none";
-            document.getElementById("modalBrand").innerText = name + " AI Handshake";
+            document.getElementById("modalBrand").innerText = name;
             let p = 0;
             const timer = setInterval(() => {
                 p += 5;
                 bar.style.width = p + "%";
-                if(p > 30) status.innerText = "Bypassing server traffic...";
-                if(p > 70) status.innerText = "Applying VIP overrides...";
+                if(p > 70) status.innerText = "Generating ID...";
                 if(p >= 100) {
                     clearInterval(timer);
-                    status.innerText = "Connection Optimized!";
+                    status.innerText = "Ready!";
                     cp.style.display = "block";
-                    cp.innerText = "GET" + Math.floor(Math.random()*40 + 20) + "VIP";
+                    cp.innerText = "SAVE" + Math.floor(Math.random()*20 + 10);
                     btn.style.display = "block";
-                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
-                    if(navigator.vibrate) navigator.vibrate(200);
+                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                 }
             }, 30);
         }
 
         function finalLaunch() {
             const code = document.getElementById("coupon").innerText;
-            const el = document.createElement('textarea');
-            el.value = code; document.body.appendChild(el); el.select();
-            document.execCommand('copy'); document.body.removeChild(el);
+            navigator.clipboard.writeText(code);
             document.getElementById("aiModal").style.display = "none";
             window.open(targetUrl, "_blank");
         }
