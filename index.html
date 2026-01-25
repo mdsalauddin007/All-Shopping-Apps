@@ -3,105 +3,194 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" />
-    <title>ShopOne AI — Pro OS</title>
+    <title>ShopOne AI</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
         :root {
-            --bg: #020408;
-            --surface: #0f121d;
-            --accent: #10b981;
-            --accent-glow: rgba(16, 185, 129, 0.3);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: rgba(255, 255, 255, 0.08);
-            --glass: rgba(15, 23, 42, 0.8);
+            /* AUTHENTIC PREMIUM THEME */
+            --bg: #050505; 
+            --surface: #111111; 
+            --border: #222222;
+            --accent: #10b981; /* Trustworthy Green */
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --btn-launch: #1f2937;
         }
 
-        /* --- SKELETON LOADING --- */
-        @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
-        .skeleton {
-            background: linear-gradient(to right, #1e293b 8%, #334155 18%, #1e293b 33%);
-            background-size: 1000px 100%;
-            animation: shimmer 2s infinite linear;
-            border-radius: 8px;
-        }
-
-        /* --- GENERAL --- */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); overflow-x: hidden; background-image: radial-gradient(circle at 50% -20%, #1e293b 0%, transparent 50%); }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); overflow-x: hidden; padding-bottom: 40px; }
         .container { max-width: 1200px; margin: auto; padding: 0 16px; }
 
-        /* --- HEADER --- */
-        .top-nav { position: sticky; top: 0; z-index: 2000; background: rgba(2, 4, 8, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 10px 0; }
-        .search-bar { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
-        .search-bar:focus-within { border-color: var(--accent); }
-        .search-bar input { background: transparent; border: 0; color: #fff; width: 100%; outline: none; font-size: 14px; font-weight: 500; }
-
-        /* --- BANNER --- */
-        .os-banner { margin-top: 15px; width: 100%; height: clamp(100px, 15vw, 160px); border-radius: 24px; position: relative; overflow: hidden; border: 1px solid var(--border); background: linear-gradient(-45deg, #0f172a, #020617, #1e1b4b, #020408); background-size: 400% 400%; animation: mesh-flow 15s infinite ease; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); transition: 0.3s; }
-        .banner-info h1 { margin: 0; font-size: clamp(22px, 3vw, 32px); font-weight: 700; letter-spacing: -1px; line-height: 1.1; }
-        .banner-info p { margin: 4px 0 0; font-size: 11px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        /* --- 1. ULTRA SLOW TICKER --- */
+        .ticker-wrap {
+            background: #000; border-bottom: 1px solid var(--border);
+            height: 36px; overflow: hidden; display: flex; align-items: center;
+        }
+        .ticker {
+            display: flex; gap: 40px; white-space: nowrap; 
+            animation: marquee 200s linear infinite; /* 200s = Very Slow & Readable */
+        }
+        .ticker:hover { animation-play-state: paused; } /* Pause on touch/hover */
         
-        #bannerIcon { font-size: 50px; z-index: 10; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: float 4s infinite ease-in-out; }
-
-        @keyframes mesh-flow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
-
-        /* --- CATEGORIES --- */
-        .cat-group { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 20px 0 25px; }
-        .cat-pill { padding: 7px 14px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); font-size: 11px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
-        .cat-pill:hover { background: rgba(255,255,255,0.05); color: #fff; }
-        .cat-pill.active { background: #fff; color: #000; border-color: #fff; }
-
-        /* --- APP GRID --- */
-        .app-shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-bottom: 60px; }
-        .app-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; cursor: pointer; position: relative; transition: 0.3s; }
-        .app-card:hover { transform: translateY(-6px); border-color: var(--accent); }
+        .t-item { font-size: 11px; font-weight: 500; color: #cbd5e1; display: flex; align-items: center; gap: 6px; }
+        .t-icon { font-size: 14px; }
         
-        .fav-icon { position: absolute; top: 15px; right: 15px; font-size: 18px; color: rgba(255,255,255,0.2); transition: 0.2s; z-index: 5; }
-        .fav-icon.active { color: #ef4444; transform: scale(1.2); }
-        
-        .squircle-icon-wrap { width: 60px; height: 60px; margin-bottom: 16px; }
-        .squircle-icon { width: 100%; height: 100%; background: #fff; border-radius: 16px; display: flex; align-items: center; justify-content: center; padding: 10px; position: relative; overflow: hidden; }
-        .squircle-icon img { max-width: 90%; max-height: 90%; object-fit: contain; z-index: 1; }
-        
-        .app-card h3 { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
-        .app-card p { font-size: 12px; color: var(--text-muted); margin: 6px 0 18px; line-height: 1.4; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        
-        .btn-stack { display: flex; gap: 6px; }
-        .btn { flex: 1; padding: 10px 4px; border-radius: 10px; border: 0; font-weight: 700; font-size: 10px; cursor: pointer; text-transform: uppercase; white-space: nowrap; }
-        .btn-p { background: var(--accent); color: #000; }
-        .btn-s { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border); }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-        /* --- MODAL --- */
-        .modal { position: fixed; inset: 0; background: rgba(2, 4, 8, 0.98); z-index: 5000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-        .modal-box { width: 90%; max-width: 360px; text-align: center; }
-        .ai-core { width: 80px; height: 80px; background: var(--accent); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; font-size: 40px; animation: pulse 2s infinite; }
-        .bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 15px 0; overflow: hidden; }
-        .bar-fill { width: 0%; height: 100%; background: var(--accent); transition: width 0.3s; }
-        .coupon-box { background: #fff; color: #000; padding: 15px; border-radius: 12px; font-weight: 800; letter-spacing: 2px; margin: 20px 0; font-size: 20px; border: 2px dashed #000; display: none; }
+        /* --- 2. SEARCH & WIDGET --- */
+        .top-nav { position: sticky; top: 0; z-index: 100; background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(10px); padding: 15px 0; border-bottom: 1px solid var(--border); }
+        
+        .search-bar { 
+            background: #161b22; border: 1px solid var(--border); 
+            border-radius: 12px; padding: 12px 16px; 
+            display: flex; align-items: center; gap: 12px; 
+        }
+        .search-bar input { background: transparent; border: 0; color: #fff; width: 100%; outline: none; font-size: 15px; font-weight: 500; }
+        
+        /* The Authentic Green Widget */
+        .price-widget {
+            display: none; 
+            background: rgba(16, 185, 129, 0.05); 
+            border: 1px solid var(--accent); 
+            border-radius: 8px; padding: 12px; margin-top: 12px;
+            font-size: 13px; color: #fff; align-items: center; gap: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+        
+        .check-box { 
+            background: var(--accent); color: #000; 
+            width: 20px; height: 20px; border-radius: 4px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 12px; font-weight: 800; flex-shrink: 0;
+        }
+
+        /* --- 3. BANNER --- */
+        .os-banner { margin-top: 20px; width: 100%; height: 160px; border-radius: 24px; position: relative; overflow: hidden; border: 1px solid var(--border); background: linear-gradient(135deg, #0f172a, #000); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
+        .banner-info h1 { margin: 0; font-size: 32px; font-weight: 800; }
+        .banner-info p { margin: 5px 0 0; font-size: 12px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        #bannerIcon { font-size: 60px; animation: float 4s infinite ease-in-out; }
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+
+        /* --- 4. CATEGORIES & GRID --- */
+        .cat-group { display: flex; flex-wrap: wrap; gap: 8px; margin: 25px 0; justify-content: center; }
+        .cat-pill { 
+            padding: 8px 18px; border-radius: 20px; 
+            background: var(--surface); border: 1px solid var(--border); 
+            font-size: 12px; font-weight: 600; color: var(--text-muted); 
+            cursor: pointer; transition: 0.2s; white-space: nowrap;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .cat-pill i { font-style: normal; font-size: 14px; }
+        .cat-pill.active { background: #fff; color: #000; }
+        .cat-pill:hover { border-color: var(--accent); color: #fff; }
+
+        .app-shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 60px; }
+        
+        .app-card { 
+            background: #0f1115; border: 1px solid var(--border); 
+            border-radius: 20px; padding: 20px; 
+            display: flex; flex-direction: column; 
+            position: relative; transition: 0.2s;
+        }
+        .app-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+
+        .app-icon-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .squircle-icon { width: 60px; height: 60px; background: #fff; border-radius: 18px; display: flex; align-items: center; justify-content: center; padding: 10px; }
+        .squircle-icon img { max-width: 90%; max-height: 90%; object-fit: contain; }
+        
+        .fav-heart { color: #333; font-size: 20px; cursor: pointer; transition: 0.2s; }
+        .fav-heart.active { color: #ef4444; }
+
+        .app-card h3 { margin: 0; font-size: 18px; font-weight: 700; color: #fff; }
+        .app-card p { font-size: 12px; color: var(--text-muted); margin: 8px 0 20px; line-height: 1.5; height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        
+        .btn-stack { display: flex; gap: 10px; margin-top: auto; }
+        .btn { flex: 1; padding: 12px; border-radius: 8px; border: 0; font-weight: 700; font-size: 11px; cursor: pointer; text-transform: uppercase; text-align: center; }
+        .btn-p { background: var(--accent); color: #000; } 
+        .btn-s { background: var(--btn-launch); color: #fff; border: 1px solid var(--border); } 
+
+        /* --- 5. ROCKET MODAL --- */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 5000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-card { 
+            background: #09090b; width: 90%; max-width: 380px; 
+            border: 1px solid var(--border); border-radius: 24px; 
+            padding: 30px 20px; text-align: center; position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+        .secure-badge { 
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1); color: var(--accent); 
+            border: 1px solid rgba(16, 185, 129, 0.2); 
+            padding: 6px 16px; border-radius: 20px; font-size: 11px; font-weight: 700; 
+            margin-bottom: 20px;
+        }
+        .rocket-circle { 
+            width: 80px; height: 80px; margin: 0 auto 15px;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4); 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 40px; box-shadow: 0 0 30px rgba(59, 130, 246, 0.2); 
+            position: relative;
+        }
+        .bolt-badge { position: absolute; bottom: 0; right: 0; background: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 4px solid #09090b; }
+        
+        .status-box { 
+            background: #0f1419; border: 1px solid var(--border); 
+            border-radius: 12px; padding: 20px; margin-top: 25px;
+        }
+        .status-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+        .status-main { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 5px; }
+        .status-checks { font-size: 11px; color: var(--accent); }
+        
+        .btn-big-green { 
+            width: 100%; padding: 18px; margin-top: 25px;
+            background: var(--accent); color: #000; 
+            border: 0; border-radius: 14px; 
+            font-size: 15px; font-weight: 800; cursor: pointer;
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.2);
+        }
+
+        /* --- 6. DISCLAIMER FOOTER --- */
+        .legal-footer {
+            text-align: center; margin-top: 40px; padding: 20px;
+            border-top: 1px solid var(--border); color: var(--text-muted);
+            font-size: 10px; opacity: 0.6;
+        }
 
         @media (max-width: 768px) {
             .app-shelf { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .app-card { padding: 15px; border-radius: 20px; }
-            .squircle-icon-wrap { width: 50px; height: 50px; margin-bottom: 12px; }
+            .app-card { padding: 15px; border-radius: 16px; }
+            .squircle-icon { width: 50px; height: 50px; }
+            .app-icon-row { margin-bottom: 10px; }
+            .app-card p { display: none; } 
             .btn-stack { flex-direction: column; gap: 6px; }
-            .cat-group { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 5px; }
-            .cat-pill { white-space: nowrap; }
+            .btn { padding: 10px; font-size: 10px; }
             .os-banner { height: 120px; padding: 0 20px; }
+            .cat-group { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 10px; }
         }
     </style>
 </head>
 <body>
 
+    <div class="ticker-wrap">
+        <div class="ticker" id="aiTicker"></div>
+    </div>
+
     <div class="top-nav">
         <div class="container">
             <div class="search-bar">
-                <span style="font-size: 16px; opacity: 0.5;">🔍</span>
-                <input id="searchInput" placeholder="Search apps..." autocomplete="off">
+                <span style="opacity:0.5; font-size: 18px;">🔍</span>
+                <input id="searchInput" placeholder="Search (e.g. Shoes, Mobile)..." autocomplete="off">
+            </div>
+            
+            <div id="priceWidget" class="price-widget">
+                <div class="check-box">✔</div>
+                <span id="priceText">Waiting...</span>
             </div>
         </div>
     </div>
@@ -118,27 +207,31 @@
         <nav id="catBar" class="cat-group"></nav>
 
         <main id="appShelf" class="app-shelf">
-            <div class="app-card" style="height: 220px; pointer-events: none;">
-                <div class="skeleton" style="width: 50px; height: 50px; border-radius: 16px; margin-bottom: 15px;"></div>
-                <div class="skeleton" style="width: 70%; height: 20px; margin-bottom: 10px;"></div>
-                <div class="skeleton" style="width: 100%; height: 35px; border-radius: 10px; margin-top: auto;"></div>
-            </div>
-             <div class="app-card" style="height: 220px; pointer-events: none;">
-                <div class="skeleton" style="width: 50px; height: 50px; border-radius: 16px; margin-bottom: 15px;"></div>
-                <div class="skeleton" style="width: 70%; height: 20px; margin-bottom: 10px;"></div>
-                <div class="skeleton" style="width: 100%; height: 35px; border-radius: 10px; margin-top: auto;"></div>
-            </div>
+            <div class="app-card" style="height:200px; opacity:0.3;"></div>
+            <div class="app-card" style="height:200px; opacity:0.3;"></div>
         </main>
+
+        <footer class="legal-footer">
+            ShopOne AI is an independent search tool & affiliate partner. We do not sell products directly. 
+            All trademarks belong to their respective owners. Prices are subject to change.
+        </footer>
     </div>
 
-    <div id="aiModal" class="modal">
-        <div class="modal-box">
-            <div class="ai-core">🧠</div>
-            <h2 id="modalBrand" style="font-size: 20px; margin-top:0;">AI Activation</h2>
-            <div class="bar-bg"><div id="modalBar" class="bar-fill"></div></div>
-            <p id="modalStatus" style="color:var(--text-muted); font-size:12px;">Secure connection...</p>
-            <div id="coupon" class="coupon-box">VIP2026</div>
-            <button id="modalBtn" onclick="finalLaunch()" style="display:none; width:100%; padding:15px; background:var(--accent); color:#000; border:0; border-radius:12px; font-weight:800; cursor:pointer; font-size:14px;">ACTIVATE →</button>
+    <div id="launchModal" class="modal">
+        <div class="modal-card">
+            <div class="secure-badge">🔒 Secure Gateway</div>
+            <div class="rocket-circle">🚀 <div class="bolt-badge">⚡</div></div>
+            <h2 id="modalBrand" style="margin:0 0 5px; font-size:24px; font-weight:800;">Amazon.com</h2>
+            <p style="margin:0; font-size:13px; color:var(--text-muted);">Optimizing shopping session...</p>
+            <div style="width:100%; height:4px; background:#222; border-radius:4px; margin:20px 0; overflow:hidden;">
+                <div id="loadFill" style="width:0%; height:100%; background:var(--accent); transition:0.3s;"></div>
+            </div>
+            <div id="successBox" class="status-box" style="display:none;">
+                <div class="status-label">SESSION STATUS</div>
+                <div class="status-main">✨ BEST PRICES UNLOCKED</div>
+                <div class="status-checks">✓ Ad-Block Active &nbsp; ✓ Affiliate Deals Applied</div>
+            </div>
+            <button id="finalBtn" onclick="finalLaunch()" class="btn-big-green" style="display:none;">ENTER STORE NOW →</button>
         </div>
     </div>
 
@@ -147,101 +240,102 @@
         let storeData = [];
         let favorites = JSON.parse(localStorage.getItem('shopOneFavs')) || [];
         let targetUrl = "";
+        let userQuery = "";
 
-        // EXACT ICON MAPPING (PER YOUR LIST)
+        // --- 🧠 STRICT PRODUCT LOGIC ---
+        // Comparison widget only shows for these, NOT for "Delhi" or "Amazon"
+        const productKeywords = [
+            "phone", "mobile", "shoe", "sneaker", "shirt", "jeans", "tshirt", "watch", "laptop", "earphone", "headphone",
+            "tv", "fridge", "ac", "camera", "bag", "saree", "kurti", "dress", "top", "lipstick", "makeup", "cream",
+            "shampoo", "oil", "soap", "book", "bottle", "toy", "game", "ps5", "xbox", "iphone", "samsung", "oneplus",
+            "nike", "adidas", "puma", "reebok", "sony", "dell", "hp", "lenovo", "asus", "apple", "boat", "noise",
+            "sandal", "heels", "jacket", "hoodie", "monitor", "keyboard", "mouse", "router", "tablet", "ipad"
+        ];
+
+        // --- 30 NAMES / 30 SCENARIOS ---
+        const namesList = ["Aarav", "Priya", "Rahul", "Sneha", "Vikram", "Anjali", "Rohan", "Ishita", "Kabir", "Meera", "Arjun", "Zara", "Dev", "Nisha", "Aditya"];
+        const actionsList = [
+            { text: "saved ₹500 on Amazon", icon: "🔥" },
+            { text: "bought Nike Air Max", icon: "👟" },
+            { text: "claimed 50% OFF deal", icon: "🎟️" },
+            { text: "ordered Pizza (BOGO)", icon: "🍕" },
+            { text: "booked Goa Flight", icon: "✈️" },
+            { text: "bought iPhone 15 Case", icon: "📱" }
+        ];
+
+        function initTicker() {
+            let html = "";
+            for(let i=0; i<30; i++) {
+                const name = namesList[i % namesList.length]; 
+                const action = actionsList[Math.floor(Math.random() * actionsList.length)];
+                const time = Math.floor(Math.random() * 59) + 1 + "s ago";
+                html += `<div class="t-item"><span class="t-icon">${action.icon}</span><span style="color:#fff; font-weight:700;">${name}</span><span>${action.text}</span><span style="opacity:0.5; font-size:10px;">• ${time}</span></div>`;
+            }
+            document.getElementById("aiTicker").innerHTML = html;
+        }
+
+        const searchPatterns = {
+            "amazon": "https://www.amazon.in/s?tag=YOUR_TAG&k=",
+            "flipkart": "https://www.flipkart.com/search?affid=YOUR_ID&q=",
+            "myntra": "https://www.myntra.com/",
+            "ajio": "https://www.ajio.com/search/?text="
+        };
+
         const catConfigs = {
-            // General
-            "all": { icon: "🤖", tag: "Universal AI", title: "ShopOne AI" },
-            "favorites": { icon: "❤️", tag: "My Saved Apps", title: "My Favorites" },
-
-            // Shopping & Auction
-            "shopping": { icon: "🛍️", tag: "Retail Therapy", title: "Shopping" },
-            "deals": { icon: "🔥", tag: "Hot Offers", title: "Super Deals" },
-            "auction": { icon: "🔨", tag: "Bidding Live", title: "Auctions" }, // Fixed as Gavel
-
-            // Fashion & Lifestyle
-            "beauty": { icon: "💄", tag: "Glow Up", title: "Beauty" },
-            "fashion": { icon: "👗", tag: "Trend Setter", title: "Fashion" },
-            "clothing": { icon: "👕", tag: "Wardrobe", title: "Clothing" },
-            "footwear": { icon: "👟", tag: "Step Up", title: "Footwear" },
-            "sportswear": { icon: "🎽", tag: "Be Active", title: "Sportswear" },
-            "grooming": { icon: "🧔", tag: "Self Care", title: "Grooming" },
-
-            // Food & Grocery
-            "grocery": { icon: "🥑", tag: "Fresh Daily", title: "Grocery" },
-            "food": { icon: "🍔", tag: "Hungry?", title: "Food & Dining" },
-            "health": { icon: "🏥", tag: "Stay Healthy", title: "Health" },
-            "wellness": { icon: "🧘", tag: "Mind & Body", title: "Wellness" },
-
-            // Education
-            "books": { icon: "📚", tag: "Read More", title: "Books" },
-            "education": { icon: "🎓", tag: "Knowledge", title: "Education" },
-
-            // Technology
-            "electronics": { icon: "💻", tag: "Tech Zone", title: "Electronics" },
-            "software": { icon: "💾", tag: "Digital Tools", title: "Software" },
-            "hosting": { icon: "☁️", tag: "Cloud Server", title: "Web Hosting" },
-            "domains": { icon: "🌐", tag: "Web Identity", title: "Domains" },
-            "internet": { icon: "📡", tag: "Connectivity", title: "Internet" },
-            "digitalassets": { icon: "🪙", tag: "Crypto & NFT", title: "Digital Assets" },
-
-            // Finance & Work
-            "finance": { icon: "💰", tag: "Wealth", title: "Finance" },
-            "freelancing": { icon: "🧑‍💼", tag: "Work Remote", title: "Freelancing" },
-
-            // Home & Family
-            "home": { icon: "🏠", tag: "Sweet Home", title: "Home" },
-            "babycare": { icon: "👶", tag: "Little Ones", title: "Baby Care" },
-            "pets": { icon: "🐾", tag: "Furry Friends", title: "Pets" },
-
-            // Travel
-            "travel": { icon: "✈️", tag: "Explore", title: "Travel" },
-            "airlines": { icon: "🛫", tag: "Fly High", title: "Airlines" },
-
-            // Fallback
-            "default": { icon: "🟦", tag: "Explore", title: "More Apps" }
+            "all": { icon: "🤖" }, "favorites": { icon: "❤️" }, "shopping": { icon: "🛍️" }, "beauty": { icon: "💄" },
+            "fashion": { icon: "👗" }, "deals": { icon: "🔥" }, "grocery": { icon: "🥑" }, "electronics": { icon: "💻" },
+            "grooming": { icon: "🧔" }, "books": { icon: "📚" }, "education": { icon: "🎓" }, "footwear": { icon: "👟" },
+            "sportswear": { icon: "🎽" }, "food": { icon: "🍔" }, "health": { icon: "🏥" }, "wellness": { icon: "🧘" },
+            "finance": { icon: "💰" }, "pets": { icon: "🐾" }, "travel": { icon: "✈️" }, "airlines": { icon: "🛫" },
+            "digitalassets": { icon: "🪙" }, "software": { icon: "💾" }, "hosting": { icon: "☁️" }, "domains": { icon: "🌐" },
+            "home": { icon: "🏠" }, "babycare": { icon: "👶" }, "clothing": { icon: "👕" }, "freelancing": { icon: "🧑‍💼" },
+            "internet": { icon: "📡" }, "auction": { icon: "🔨" }, "default": { icon: "🟦" }
         };
 
         async function init() {
-            setTimeout(async () => {
-                try {
-                    const res = await fetch(API_URL);
-                    storeData = await res.json();
-                    renderFilters();
-                    renderShelf("All");
-                } catch (e) { console.error(e); }
-            }, 1000);
+            initTicker(); 
+            try {
+                const res = await fetch(API_URL);
+                storeData = await res.json();
+                renderFilters();
+                renderShelf("All");
+            } catch (e) { console.error(e); }
         }
 
-        // SMART ICON MATCHER
-        function getCatConfig(catName) {
-            const cleanName = catName.toLowerCase().replace(/\s+/g, '').trim();
-            const lower = catName.toLowerCase();
+        document.getElementById("searchInput").oninput = (e) => {
+            userQuery = e.target.value.toLowerCase();
+            const widget = document.getElementById("priceWidget");
+            
+            const isProduct = productKeywords.some(keyword => userQuery.includes(keyword));
+            
+            if(userQuery.length > 2 && isProduct) {
+                widget.style.display = "flex";
+                const p1 = Math.floor(Math.random()*1000)+500;
+                const p2 = p1 - Math.floor(Math.random()*50);
+                document.getElementById("priceText").innerHTML = `Comparing <b>${userQuery}</b>: Amazon (₹${p1}) vs Flipkart (₹${p2})`;
+            } else {
+                widget.style.display = "none";
+            }
+            renderShelf("All", userQuery);
+        };
 
-            // 1. Direct Match (Best)
-            if (catConfigs[cleanName]) return catConfigs[cleanName];
-
-            // 2. Keyword Match (Smart)
-            if (lower.includes('hosting')) return catConfigs['hosting'];
-            if (lower.includes('domain')) return catConfigs['domains'];
-            if (lower.includes('auction') || lower.includes('bid')) return catConfigs['auction'];
-            if (lower.includes('gym') || lower.includes('fitness')) return catConfigs['sportswear'];
-            if (lower.includes('shoe') || lower.includes('sneaker')) return catConfigs['footwear'];
-            if (lower.includes('baby') || lower.includes('kid')) return catConfigs['babycare'];
-            if (lower.includes('flight') || lower.includes('plane')) return catConfigs['airlines'];
-            if (lower.includes('wifi') || lower.includes('broadband')) return catConfigs['internet'];
-            if (lower.includes('crypto')) return catConfigs['digitalassets'];
-            if (lower.includes('job') || lower.includes('work')) return catConfigs['freelancing'];
-
-            // 3. Fallback
-            return catConfigs['default'];
+        function getCatConfig(cat) {
+            const safeKey = cat.toLowerCase().replace(/\s+/g,'').replace(/&/g,'').trim();
+            if(safeKey.includes('travel')) return catConfigs['travel'];
+            if(safeKey.includes('baby')) return catConfigs['babycare'];
+            if(safeKey.includes('digital')) return catConfigs['digitalassets'];
+            if(safeKey.includes('domain')) return catConfigs['domains'];
+            return catConfigs[safeKey] || catConfigs["default"];
         }
 
         function renderFilters() {
             const bar = document.getElementById("catBar");
-            const cats = ["All", "Favorites", ...new Set(storeData.map(b => b.category))];
-            
-            bar.innerHTML = cats.map(c => {
+            const priorityCats = ["All", "Favorites", "Shopping", "Beauty", "Fashion", "Deals", "Grocery", "Electronics", "Grooming", "Books", "Education", "Footwear", "Sportswear", "Food", "Health", "Wellness", "Finance", "Pets", "Travel", "Airlines", "Digital Assets", "Software", "Hosting", "Domains", "Home", "Baby Care", "Clothing", "Freelancing", "Internet", "Auction"];
+            const sheetCats = [...new Set(storeData.map(b => b.category))];
+            const finalCats = [...new Set([...priorityCats, ...sheetCats])];
+
+            bar.innerHTML = finalCats.map(c => {
+                if(!c) return '';
                 const config = getCatConfig(c);
                 return `<div class="cat-pill ${c==='All'?'active':''}" onclick="setCategory(this, '${c}')">
                     <i>${config.icon}</i> ${c}
@@ -252,117 +346,88 @@
         function setCategory(btn, cat) {
             document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
             btn.classList.add('active');
-            
             const config = getCatConfig(cat);
-            
-            // Update Banner Text
-            document.getElementById("bannerTitle").innerText = config.title || cat;
-            document.getElementById("bannerTag").innerText = config.tag || "Browsing";
-            
-            // Update Banner Icon with Animation
-            const iconEl = document.getElementById("bannerIcon");
-            iconEl.style.transform = "scale(0) rotate(-45deg)";
-            iconEl.style.opacity = "0";
-            
-            setTimeout(() => {
-                iconEl.innerText = config.icon;
-                iconEl.style.transform = "scale(1) rotate(0deg)";
-                iconEl.style.opacity = "1";
-            }, 200);
-            
-            renderShelf(cat);
-        }
-
-        function toggleFav(e, name) {
-            e.stopPropagation();
-            if(favorites.includes(name)) {
-                favorites = favorites.filter(f => f !== name);
-            } else {
-                favorites.push(name);
-            }
-            localStorage.setItem('shopOneFavs', JSON.stringify(favorites));
-            
-            const activeCat = document.querySelector('.cat-pill.active').innerText.trim();
-            if(document.querySelector('.cat-pill.active').innerText.includes("Favorites")) {
-                 renderShelf("Favorites");
-            } else {
-                e.target.classList.toggle('active');
-            }
+            document.getElementById("bannerTitle").innerText = cat === "All" ? "ShopOne AI" : cat;
+            document.getElementById("bannerIcon").innerText = config.icon;
+            renderShelf(cat, userQuery);
         }
 
         function renderShelf(cat, q = "") {
             const shelf = document.getElementById("appShelf");
             let filtered = [];
-
             if (cat === "Favorites") {
                 filtered = storeData.filter(b => favorites.includes(b.name));
-                if(filtered.length === 0) {
-                    shelf.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-muted);">
-                        <div style="font-size:40px; margin-bottom:10px;">💔</div>
-                        No favorites yet.
-                    </div>`;
-                    return;
-                }
             } else {
-                filtered = storeData.filter(b => (cat === "All" || b.category === cat) && b.name.toLowerCase().includes(q.toLowerCase()));
+                filtered = storeData.filter(b => {
+                    const matchCat = (cat === "All") || (b.category && b.category.toLowerCase().includes(cat.toLowerCase().replace('travel','').trim()));
+                    const matchQuery = b.name.toLowerCase().includes(q);
+                    return matchCat && matchQuery;
+                });
             }
             
             shelf.innerHTML = filtered.map(b => {
                 const isFav = favorites.includes(b.name);
                 return `
-                <div class="app-card" onclick="triggerActivation('${b.link}', '${b.name}')">
-                    <div class="fav-icon ${isFav ? 'active' : ''}" onclick="toggleFav(event, '${b.name}')">❤</div>
-                    <div class="squircle-icon-wrap">
+                <div class="app-card" onclick="triggerSession('${b.link}', '${b.name}', '${b.logo_override}')">
+                    <div class="app-icon-row">
                         <div class="squircle-icon">
                             <img src="${b.logo_override}" onerror="this.src='https://ui-avatars.com/api/?name=${b.name}'">
                         </div>
+                        <div class="fav-heart ${isFav?'active':''}" onclick="toggleFav(event, '${b.name}')">❤</div>
                     </div>
                     <h3>${b.name}</h3>
-                    <p>${b.desc || 'Verified Store Connection'}</p>
+                    <p>${b.desc || 'Online Shopping & Deals'}</p>
                     <div class="btn-stack">
-                        <button class="btn btn-p">Activate Deal</button>
-                        <button class="btn btn-s">Launch</button>
+                        <button class="btn btn-p">ACTIVATE DEAL</button>
+                        <button class="btn btn-s">LAUNCH</button>
                     </div>
                 </div>
             `}).join('');
         }
 
-        function triggerActivation(link, name) {
+        function toggleFav(e, name) {
+            e.stopPropagation();
+            if(favorites.includes(name)) favorites = favorites.filter(f => f !== name);
+            else favorites.push(name);
+            localStorage.setItem('shopOneFavs', JSON.stringify(favorites));
+            e.target.classList.toggle('active');
+        }
+
+        function triggerSession(link, name, logo) {
             targetUrl = link;
-            const modal = document.getElementById("aiModal");
-            const bar = document.getElementById("modalBar");
-            const status = document.getElementById("modalStatus");
-            const cp = document.getElementById("coupon");
-            const btn = document.getElementById("modalBtn");
+            const cleanName = name.toLowerCase().replace(/\s+/g, '');
+            const matchedKey = Object.keys(searchPatterns).find(key => cleanName.includes(key));
+            const isProduct = productKeywords.some(keyword => userQuery.includes(keyword));
+            
+            if(userQuery.length > 1 && matchedKey && isProduct) {
+                targetUrl = searchPatterns[matchedKey] + encodeURIComponent(userQuery);
+            }
+
+            const modal = document.getElementById("launchModal");
+            const bar = document.getElementById("loadFill");
+            const box = document.getElementById("successBox");
+            const btn = document.getElementById("finalBtn");
+            
             modal.style.display = "flex";
-            bar.style.width = "0%";
-            cp.style.display = "none";
-            btn.style.display = "none";
             document.getElementById("modalBrand").innerText = name;
-            let p = 0;
-            const timer = setInterval(() => {
-                p += 5;
-                bar.style.width = p + "%";
-                if(p > 70) status.innerText = "Generating ID...";
-                if(p >= 100) {
-                    clearInterval(timer);
-                    status.innerText = "Ready!";
-                    cp.style.display = "block";
-                    cp.innerText = "SAVE" + Math.floor(Math.random()*20 + 10);
-                    btn.style.display = "block";
-                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-                }
-            }, 30);
+            bar.style.width = "0%";
+            box.style.display = "none";
+            btn.style.display = "none";
+
+            setTimeout(() => { bar.style.width = "60%"; }, 300);
+            setTimeout(() => { 
+                bar.style.width = "100%"; 
+                box.style.display = "block"; 
+                btn.style.display = "block";
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#10b981', '#ffffff'] });
+            }, 900);
         }
 
         function finalLaunch() {
-            const code = document.getElementById("coupon").innerText;
-            navigator.clipboard.writeText(code);
-            document.getElementById("aiModal").style.display = "none";
+            document.getElementById("launchModal").style.display = "none";
             window.open(targetUrl, "_blank");
         }
 
-        document.getElementById("searchInput").oninput = (e) => renderShelf("All", e.target.value);
         window.onload = init;
     </script>
 </body>
