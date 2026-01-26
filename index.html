@@ -10,8 +10,7 @@
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#050505">
-    
-    <link rel="icon" href="logo.png" type="image/png"> 
+    <link rel="icon" href="logo.png" type="image/png">
     <link rel="apple-touch-icon" href="logo.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -76,7 +75,7 @@
 
         /* --- NAV & WIDGET --- */
         .top-nav { position: sticky; top: 0; z-index: 100; background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(10px); padding: 15px 0; border-bottom: 1px solid var(--border); }
-        .nav-content { display: flex; align-items: center; gap: 10px; }
+        .nav-content { display: flex; align-items: center; gap: 10px; } 
         .search-bar { 
             flex-grow: 1; background: #161b22; border: 1px solid var(--border); 
             border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; 
@@ -225,18 +224,15 @@
     </div>
 
     <script>
-        // --- PWA & INSTALL LOGIC ---
+        // --- NEW INSTALL LOGIC ADDED ---
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js').then(() => {
-                console.log('Service Worker Registered');
-            }).catch(err => console.log(err));
+            navigator.serviceWorker.register('/service-worker.js').catch(err => console.log(err));
         }
 
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Button ko visible karein agar browser support karta hai
             document.getElementById('installAppBtn').style.display = 'block';
         });
 
@@ -245,11 +241,12 @@
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    deferredPrompt = null;
                     document.getElementById('installAppBtn').style.display = 'none';
                 }
+                deferredPrompt = null;
             }
         }
+        // --- END OF NEW LOGIC ---
 
         const API_URL = "https://opensheet.elk.sh/1BXjElCofEZncI0G9iPEhJ6s5MqkqERCfWXHoYR_cg-Q/All-SHOPPING-APPS";
         let storeData = [];
