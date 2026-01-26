@@ -3,7 +3,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" />
-    <title>ShopOne AI</title>
+    
+    <title>ShopOne AI - Best Shopping App & Price Comparison</title>
+    <meta name="description" content="ShopOne AI is India's first Shopping OS. Compare prices on Amazon, Flipkart, Myntra. Save 10GB storage. One app for 75+ stores.">
+    <meta name="keywords" content="ShopOne AI, Price Compare, Shopping App, Amazon vs Flipkart, Best Deals India, All in one shopping app">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#050505">
+    
+    <link rel="icon" href="logo.png" type="image/png"> 
+    <link rel="apple-touch-icon" href="logo.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -23,18 +32,34 @@
         body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); overflow-x: hidden; padding-bottom: 40px; }
         .container { max-width: 1200px; margin: auto; padding: 0 16px; }
 
-        /* --- 🎯 SINGLE LINE LOGO FIX --- */
+        /* --- INSTALL BUTTON STYLE --- */
+        #installAppBtn {
+            display: none; /* Hidden by default */
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 11px;
+            text-transform: uppercase;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+
+        /* --- LOGO STYLES --- */
         .brand-logo {
             width: 44px; height: 44px;
             fill: none; 
             stroke: var(--accent); 
             stroke-width: 3.5;
             stroke-linecap: square; 
-            stroke-linejoin: round; /* Smooth connect points */
+            stroke-linejoin: round;
             filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.6));
         }
-
-        /* Banner Logo (Bada wala) */
         .banner-logo {
             width: 70px; height: 70px;
             stroke-width: 3;
@@ -51,9 +76,7 @@
 
         /* --- NAV & WIDGET --- */
         .top-nav { position: sticky; top: 0; z-index: 100; background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(10px); padding: 15px 0; border-bottom: 1px solid var(--border); }
-        
-        .nav-content { display: flex; align-items: center; gap: 15px; }
-        
+        .nav-content { display: flex; align-items: center; gap: 10px; }
         .search-bar { 
             flex-grow: 1; background: #161b22; border: 1px solid var(--border); 
             border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; 
@@ -73,8 +96,22 @@
         .os-banner { margin-top: 20px; width: 100%; height: 160px; border-radius: 24px; position: relative; overflow: hidden; border: 1px solid var(--border); background: linear-gradient(135deg, #0f172a, #000); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
         .banner-info h1 { margin: 0; font-size: 32px; font-weight: 800; }
         .banner-info p { margin: 5px 0 0; font-size: 12px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        
         @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+
+        /* --- SEO BOX --- */
+        .seo-box {
+            margin-top: 50px;
+            padding: 25px;
+            background: #0f1115;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .seo-box h2 { color: var(--accent); font-size: 16px; margin-top: 0; }
+        .seo-box strong { color: #fff; }
+        .seo-box ul { padding-left: 20px; }
 
         /* --- CARDS & CATS --- */
         .cat-group { display: flex; flex-wrap: wrap; gap: 8px; margin: 25px 0; justify-content: center; }
@@ -86,9 +123,8 @@
              .cat-group::-webkit-scrollbar { display: none; }
         }
 
-        .app-shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 60px; }
-        
-        .app-card { background: #0f1115; border: 1px solid var(--border); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; position: relative; transition: 0.2s; }
+        .app-shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 40px; }
+        .app-card { background: #0f1115; border: 1px solid var(--border); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; position: relative; transition: 0.2s; cursor: pointer; }
         .app-card:hover { border-color: var(--accent); transform: translateY(-5px); }
         .app-icon-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
         .squircle-icon { width: 60px; height: 60px; background: #fff; border-radius: 18px; display: flex; align-items: center; justify-content: center; padding: 10px; }
@@ -131,7 +167,10 @@
                     <span style="opacity:0.5; font-size: 18px;">🔍</span>
                     <input id="searchInput" placeholder="Search products..." autocomplete="off">
                 </div>
+                
+                <button id="installAppBtn" onclick="installApp()">INSTALL</button>
             </div>
+            
             <div id="priceWidget" class="price-widget">
                 <div class="check-box">✔</div>
                 <span id="priceText">Waiting...</span>
@@ -154,6 +193,18 @@
 
         <nav id="catBar" class="cat-group"></nav>
         <main id="appShelf" class="app-shelf"></main>
+        
+        <section class="seo-box">
+            <h2>About ShopOne AI - Best Shopping App in Worldwide</h2>
+            <p><strong>ShopOne AI</strong> is a smart shopping assistant that helps you compare prices across <strong>Amazon, Flipkart, Myntra, and Ajio</strong> instantly. Stop installing multiple apps and save your phone storage.</p>
+            <p><strong>Why use ShopOne AI?</strong></p>
+            <ul>
+                <li><strong>Compare Prices:</strong> Find the lowest price for mobiles, clothes, and electronics.</li>
+                <li><strong>Save Storage:</strong> Access 75+ Apps in one place without installing them.</li>
+                <li><strong>Fast & Secure:</strong> Works smoothly on slow internet connections.</li>
+            </ul>
+        </section>
+
         <footer class="legal-footer">ShopOne AI is an independent search tool. We may earn a commission on qualifying purchases. All third-party trademarks and logos are the property of their respective owners.</footer>
     </div>
 
@@ -174,6 +225,32 @@
     </div>
 
     <script>
+        // --- PWA & INSTALL LOGIC ---
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js').then(() => {
+                console.log('Service Worker Registered');
+            }).catch(err => console.log(err));
+        }
+
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Button ko visible karein agar browser support karta hai
+            document.getElementById('installAppBtn').style.display = 'block';
+        });
+
+        async function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    deferredPrompt = null;
+                    document.getElementById('installAppBtn').style.display = 'none';
+                }
+            }
+        }
+
         const API_URL = "https://opensheet.elk.sh/1BXjElCofEZncI0G9iPEhJ6s5MqkqERCfWXHoYR_cg-Q/All-SHOPPING-APPS";
         let storeData = [];
         let favorites = JSON.parse(localStorage.getItem('shopOneFavs')) || [];
@@ -182,12 +259,8 @@
 
         const productKeywords = ["phone", "mobile", "shoe", "sneaker", "shirt", "jeans", "tshirt", "watch", "laptop", "earphone", "headphone", "tv", "fridge", "ac", "camera", "bag", "saree", "kurti", "dress", "top", "lipstick", "makeup", "cream", "shampoo", "oil", "soap", "book", "bottle", "toy", "game", "ps5", "xbox", "iphone", "samsung", "oneplus", "nike", "adidas", "puma", "reebok", "sony", "dell", "hp", "lenovo", "asus", "apple", "boat", "noise", "sandal", "heels", "jacket", "hoodie", "monitor", "keyboard", "mouse", "router", "tablet", "ipad"];
         
-        // --- 🌍 WORLDWIDE NAMES & ACTIONS (Updated) ---
-        const namesList = [
-            "Aarav (IN)", "John (US)", "Wei (CN)", "Ahmed (AE)", 
-            "Carlos (ES)", "Priya (IN)", "Sarah (UK)", "Hiroshi (JP)"
-        ];
-        
+        // --- 🌍 WORLDWIDE NAMES & ACTIONS ---
+        const namesList = ["Aarav (IN)", "John (US)", "Wei (CN)", "Ahmed (AE)", "Carlos (ES)", "Priya (IN)", "Sarah (UK)", "Hiroshi (JP)"];
         const actionsList = [
             { text: "saved $15 on Amazon", icon: "🔥" },
             { text: "bought Nike Air Max", icon: "👟" },
@@ -209,7 +282,13 @@
             document.getElementById("aiTicker").innerHTML = html;
         }
 
-        const searchPatterns = { "amazon": "https://www.amazon.in/s?tag=YOUR_TAG&k=", "flipkart": "https://www.flipkart.com/search?affid=YOUR_ID&q=", "myntra": "https://www.myntra.com/", "ajio": "https://www.ajio.com/search/?text=" };
+        const searchPatterns = { 
+            "amazon": "https://www.amazon.in/s?tag=YOUR_TAG&k=", 
+            "flipkart": "https://www.flipkart.com/search?affid=YOUR_ID&q=", 
+            "myntra": "https://www.myntra.com/", 
+            "ajio": "https://www.ajio.com/search/?text=" 
+        };
+        
         const catConfigs = { "all": { icon: "🤖" }, "favorites": { icon: "❤️" }, "shopping": { icon: "🛍️" }, "beauty": { icon: "💄" }, "fashion": { icon: "👗" }, "deals": { icon: "🔥" }, "grocery": { icon: "🥑" }, "electronics": { icon: "💻" }, "grooming": { icon: "🧔" }, "books": { icon: "📚" }, "education": { icon: "🎓" }, "footwear": { icon: "👟" }, "sportswear": { icon: "🎽" }, "food": { icon: "🍔" }, "health": { icon: "🏥" }, "wellness": { icon: "🧘" }, "finance": { icon: "💰" }, "pets": { icon: "🐾" }, "travel": { icon: "✈️" }, "airlines": { icon: "🛫" }, "digitalassets": { icon: "🪙" }, "software": { icon: "💾" }, "hosting": { icon: "☁️" }, "domains": { icon: "🌐" }, "home": { icon: "🏠" }, "babycare": { icon: "👶" }, "clothing": { icon: "👕" }, "freelancing": { icon: "🧑‍💼" }, "internet": { icon: "📡" }, "auction": { icon: "🔨" }, "default": { icon: "🟦" } };
 
         async function init() {
@@ -306,4 +385,3 @@
     </script>
 </body>
 </html>
-
